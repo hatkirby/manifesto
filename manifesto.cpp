@@ -7,7 +7,14 @@
 
 int main(int argc, char** argv)
 {
-  YAML::Node config = YAML::LoadFile("config.yml");
+  if (argc != 2)
+  {
+    std::cout << "usage: manifesto [configfile]" << std::endl;
+    return -1;
+  }
+
+  std::string configfile(argv[1]);
+  YAML::Node config = YAML::LoadFile(configfile);
     
   twitter::auth auth;
   auth.setConsumerKey(config["consumer_key"].as<std::string>());
@@ -47,7 +54,7 @@ int main(int argc, char** argv)
 
       loc += 140;
       {
-        std::ofstream fout("config.yml");
+        std::ofstream fout(configfile);
         config["current_location"] = loc;
         fout << config;
       }
