@@ -35,11 +35,14 @@ int main(int argc, char** argv)
     std::ifstream corpus(config["corpus"].as<std::string>());
     corpus.ignore(loc);
 
-    char buffer[140];
-    while (corpus)
+    if (!corpus.eof())
     {
-      corpus.read(buffer, 140);
-      tweets.push_back(std::string(buffer, 140));
+      char buffer[140];
+      while (corpus)
+      {
+        corpus.read(buffer, 140);
+        tweets.push_back(std::string(buffer, 140));
+      }
     }
   }
 
@@ -69,4 +72,6 @@ int main(int argc, char** argv)
 
     std::this_thread::sleep_for(std::chrono::hours(6));
   }
+
+  std::cout << "Corpus complete!" << std::endl;
 }
